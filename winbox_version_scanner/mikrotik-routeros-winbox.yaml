@@ -1,0 +1,24 @@
+id: mikrotik-routeros-winbox
+
+info:
+  name: RouterOS Version Detection
+  author: ree4pwn
+  severity: info
+  description: Detects the RouterOS version of a MikroTik device with winbox.
+  reference:
+    - https://github.com/tenable/routeros/tree/master/8291_scanner
+  tags: network,mikrotik,detect,winbox
+
+tcp:
+  - inputs:
+      - data: "{{hex_decode('12026c6973740000000000000000008000000000')}}"
+    host:
+      - "{{Hostname}}"
+    port: 8291
+    read-size: 1024
+    extractors:
+      - type: regex
+        name: version
+        group: 1
+        regex:
+          - 'version: "([\d\.]+)" '
